@@ -1,7 +1,7 @@
 # Retrieve Operation
 ## Command
 from bookshelf.models import Book
-book = Book.objects.all()
+Book.objects.get(title="1984")
 print(book)
 
 ## Expected Output
