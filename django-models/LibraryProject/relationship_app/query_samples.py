@@ -27,7 +27,7 @@ def books_in_library(library_name):
 def librarian_for_library(library_name):
     """returns the librarian responsible for a given library."""
     try: 
-        library = Library.objects.get(library=)
+        library = Library.objects.get(library=
         librarian = library.librarian
         print(f"\nLibrarian for {library_name}: {librarian.name}") 
     except Library.DoesNotExist:
