@@ -16,7 +16,7 @@ def books_by_author(author_name):
 def books_in_library(library_name):
     """returns all books available in a specific library."""
     try:
-        library = Library.objects.get(name= library_name)
+        library = Library.objects.get(name=library_name)
         books = library.books.all()
         print(f"\nBooks in {library_name}:")
         for book in books:
@@ -27,7 +27,7 @@ def books_in_library(library_name):
 def librarian_for_library(library_name):
     """returns the librarian responsible for a given library."""
     try: 
-        library = Library.objects.get(name= library_name)
+        library = Library.objects.get(name=library_name)
         librarian = library.librarian
         print(f"\nLibrarian for {library_name}: {librarian.name}") 
     except Library.DoesNotExist:
