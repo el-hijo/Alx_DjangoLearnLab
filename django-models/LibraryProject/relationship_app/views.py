@@ -1,12 +1,9 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 from .models import Book
 
 # Create your views here.
-def book_list(request):
+def list_books(request):
     """Retrieves all books and renders a tempate displaying the list."""
     books = Book.objects.all()
-    output = "List of Books:\n"
-    for book in books:
-        output += f"-{book.title} by {book.author}"
-        
-    return HttpResponse(output, content_type= "text/plain")
+    context = {'list_books': books}
+    return render(request, 'relationship_app/list_books.html', context)
