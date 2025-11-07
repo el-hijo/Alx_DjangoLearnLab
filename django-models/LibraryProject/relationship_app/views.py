@@ -3,14 +3,15 @@ from django.views.generic import DetailView
 from .models import Book, Library
 
 
-# ✅ Function-based view
+# Function-based view
 def book_list(request):
     """Lists all books stored in the database"""
     books = Book.objects.all()
-    return render(request, 'book_list.html', {'books': books})
+    context = {'book_list': books}
+    return render(request, 'relationship_app/book_list.html', context)
 
 
-# ✅ Class-based view
+#  Class-based view
 class BookDetailView(DetailView):
     """Displays details for a specific library and its books"""
     model = Library
