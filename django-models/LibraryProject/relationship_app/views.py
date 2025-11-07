@@ -5,13 +5,13 @@ from .models import Book, Library
 
 
 # Function-based view
-def list_book(request):
+def list_books(request):
     """Lists all books stored in the database"""
     books = Book.objects.all()
-    output = "\n".join([f"{book.title} by {book.author}" for book in books])
-    return HttpResponse(output, content_type= "text/plain")
-    #context = {'book_list': books}
-    #return render(request, 'relationship_app/list_book.html', context)
+    #output = "\n".join([f"{book.title} by {book.author}" for book in books])
+    #return HttpResponse(output, content_type= "text/plain")
+    context = {'list_book': books}
+    return render(request, 'relationship_app/list_books.html', context)
 
 
 #  Class-based view
