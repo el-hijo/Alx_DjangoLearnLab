@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import DetailView
 from .models import Book, Library
@@ -7,8 +8,10 @@ from .models import Book, Library
 def list_book(request):
     """Lists all books stored in the database"""
     books = Book.objects.all()
-    context = {'book_list': books}
-    return render(request, 'relationship_app/list_book.html', context)
+    output = "\n".join([f"{book.title} by {book.author}" for book in books])
+    return HttpResponse(output, content_type= "text/plain")
+    #context = {'book_list': books}
+    #return render(request, 'relationship_app/list_book.html', context)
 
 
 #  Class-based view
