@@ -4,11 +4,11 @@ from .models import Book, Library
 
 
 # Function-based view
-def book_list(request):
+def list_book(request):
     """Lists all books stored in the database"""
     books = Book.objects.all()
     context = {'book_list': books}
-    return render(request, 'relationship_app/book_list.html', context)
+    return render(request, 'relationship_app/list_book.html', context)
 
 
 #  Class-based view
