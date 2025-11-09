@@ -13,13 +13,18 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
+"""'r
 from django.contrib import admin
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 from .views import list_books, LibraryDetailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('relationship_app.urls')), 
+    path('login/', LoginView.as_view(template_name='registration/login.html'),
+    name = 'login'),
+    path('logout/', LoginView.as_view(), name='logout'),
 ]
 
