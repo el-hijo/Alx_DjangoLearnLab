@@ -19,7 +19,7 @@ from django.urls import path, include
 from relationship_app.views import book_list, BookDetailView
 
 urlpatterns = [
-    path('', book_list, name='home'),  # 👈 This makes / show the book list
+    path('', book_list, name='home'), 
     path('admin/', admin.site.urls),
     path('books/', book_list, name='book_list'),
     path('library/<int:pk>/', BookDetailView.as_view(), name='library_detail'),
