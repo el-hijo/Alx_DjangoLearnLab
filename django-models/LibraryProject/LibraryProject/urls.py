@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('books/', list_books, name='book_list'),
     path('library/<int:pk>/', BookDetailView.as_view(), name='library_detail'),
+    path('admin-site/', admin.site.urls),  # default Django admin
+    path('', include('relationship_app.urls')),  # include your app URLs
 ]
 
 
