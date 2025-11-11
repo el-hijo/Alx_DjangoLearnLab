@@ -7,88 +7,81 @@ from .models import Book
 from .models import Library
 from .models import UserProfile
 from django.views.generic.detail import DetailView
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from .models import UserProfile
 
 
+def is_admin(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
-# Function-based view
+def is_librarian(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
+
+def is_member(user):
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
+
+
+# ✅ Registration view
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registration successful!")
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
+
+
+# ✅ Function-based view: Book list
+@login_required
 def list_books(request):
     """Lists all books stored in the database"""
     books = Book.objects.all()
-    context = {'books': books}
-    return render(request, 'relationship_app/list_books.html', context)
+    return render(request, 'relationship_app/list_books.html', {'list_books': books})
 
 
-#  Class-based view
+# ✅ Class-based view for Library details
 class LibraryDetailView(DetailView):
-    """Displays details for a specific library and its books"""
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['books'] = Book.objects.filter(library=self.object)
-        return context
 
-
-
-
-
-# -----------------------------
-# Register view
-# -----------------------------
-def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)  # <-- required by checker
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = UserCreationForm()               # <-- required by checker
-    return render(request, 'relationship_app/register.html', {'form': form})  # <-- required by checker
-
-# -----------------------------
-# Login view
-# -----------------------------
-def user_login(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'relationship_app/login.html', {'form': form})
-
-# -----------------------------
-# Logout view
-# -----------------------------
-def user_logout(request):
-    logout(request)
-    messages.success(request, "Logged out successfully!")
-    return redirect('login')
-
-def is_admin(user):
-    return user.userprofile.role == 'Admin'
-
-def is_librarian(user):
-    return user.userprofile.role == 'Librarian'
-
-def is_member(user):
-    return user.userprofile.role == 'Member'
-
+# ✅ Admin-only view
+@login_required
 @user_passes_test(is_admin)
 def admin_view(request):
     return render(request, 'relationship_app/admin_view.html')
 
+
+# ✅ Librarian-only view
+@login_required
 @user_passes_test(is_librarian)
 def librarian_view(request):
     return render(request, 'relationship_app/librarian_view.html')
 
+
+# ✅ Member-only view
+@login_required
 @user_passes_test(is_member)
 def member_view(request):
-    return render(request, 'relationship_app/member_view.html')
+
+
+
+@permission_required('relationship_app.can_add_book')
+def add_book(request):
+    # logic to add a book
+    pass
+
+@permission_required('relationship_app.can_change_book')
+def edit_book(request, pk):
+    # logic to edit a book
+    pass
+
+@permission_required('relationship_app.can_delete_book')
+def delete_book(request, pk):
+    # logic to delete a book
+    pass
