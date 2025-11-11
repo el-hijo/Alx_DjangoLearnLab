@@ -17,8 +17,9 @@ Including another URLconf
 
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import (   
-    list_books,
+from .views import list_books 
+
+from .views import (
     LibraryDetailView,  
     register,
     admin_view,
@@ -27,20 +28,18 @@ from .views import (
 )
 
 urlpatterns = [
-    # Book views
-    path('', list_books, name='home'),               # Function-based view
-    path('books/', list_books, name='book_list'),   # Function-based view
-    path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),  # Class-based view
+    path('', list_books, name='home'),
+    path('books/', list_books, name='book_list'),
+    path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
 
-    # Authentication views
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
     path('register/', register, name='register'),
 
-    # Role-based views
     path('admin-view/', admin_view, name='admin_view'),
     path('librarian-view/', librarian_view, name='librarian_view'),
     path('member-view/', member_view, name='member_view'),
 ]
+
 
 
