@@ -17,9 +17,9 @@ Including another URLconf
 
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import (
+from .views import (   
     list_books,
-    LibraryDetailView,  # 👈 rename this in your views.py if needed
+    LibraryDetailView,  
     register,
     admin_view,
     librarian_view,
@@ -28,11 +28,11 @@ from .views import (
 
 urlpatterns = [
     # Book views
-    path('', list_books, name='home'),
-    path('books/', list_books, name='book_list'),
-    path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),  # 👈 checker expects this
+    path('', list_books, name='home'),               # Function-based view
+    path('books/', list_books, name='book_list'),   # Function-based view
+    path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),  # Class-based view
 
-    # Authentication
+    # Authentication views
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
     path('register/', register, name='register'),
