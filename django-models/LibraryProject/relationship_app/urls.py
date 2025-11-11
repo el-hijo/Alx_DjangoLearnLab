@@ -16,28 +16,22 @@ Including another URLconf
 """
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import (
-    list_books,
-    BookDetailView,
-    register,
-    admin_view,
-    librarian_view,
-    member_view,
-)
+from . import views  # 👈 import the entire views module instead of specific functions
 
 urlpatterns = [
     # Book views
-    path('', list_books, name='home'),               # Homepage: list of books
-    path('books/', list_books, name='book_list'),   # List all books
-    path('library/<int:pk>/', BookDetailView.as_view(), name='library_detail'),  # Book details
+    path('', views.list_books, name='home'),
+    path('books/', views.list_books, name='book_list'),
+    path('library/<int:pk>/', views.BookDetailView.as_view(), name='library_detail'),
 
     # Authentication
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
-    path('register/', register, name='register'),
+    path('register/', views.register, name='register'),  # 👈 must be views.register
 
     # Role-based views
-    path('admin-view/', admin_view, name='admin_view'),
-    path('librarian-view/', librarian_view, name='librarian_view'),
-    path('member-view/', member_view, name='member_view'),
+    path('admin-view/', views.admin_view, name='admin_view'),
+    path('librarian-view/', views.librarian_view, name='librarian_view'),
+    path('member-view/', views.member_view, name='member_view'),
 ]
+
