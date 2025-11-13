@@ -6,3 +6,7 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'date_of_birth', 'profile_photo')
+
+
+class ExampleForm(forms.Form):
+    example_field = forms.CharField(max_length=100)
