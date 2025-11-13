@@ -138,3 +138,19 @@ LOGIN_URL = '/login/'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Enable browser XSS filtering
+SECURE_BROWSER_XSS_FILTER = True
+
+# Prevent the site from being rendered in a frame (clickjacking protection)
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent the browser from guessing content types (MIME sniffing)
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Ensure CSRF cookie is only sent over HTTPS
+CSRF_COOKIE_SECURE = False
+
+# Ensure session cookie is only sent over HTTPS
+SESSION_COOKIE_SECURE = False
+
