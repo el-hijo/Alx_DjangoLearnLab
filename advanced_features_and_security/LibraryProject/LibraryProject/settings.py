@@ -156,3 +156,8 @@ SESSION_COOKIE_SECURE = False
 
 # Security settings
 SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS
+
+# Security settings
+SECURE_HSTS_SECONDS = 31536000  # 1 year in seconds
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow preloading in browsers
