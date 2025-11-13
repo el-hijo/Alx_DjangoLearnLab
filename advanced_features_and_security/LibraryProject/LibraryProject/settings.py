@@ -154,3 +154,5 @@ CSRF_COOKIE_SECURE = False
 # Ensure session cookie is only sent over HTTPS
 SESSION_COOKIE_SECURE = False
 
+# Security settings
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS
