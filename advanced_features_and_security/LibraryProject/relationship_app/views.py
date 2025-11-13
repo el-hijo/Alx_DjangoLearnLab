@@ -68,10 +68,7 @@ def librarian_view(request):
 @login_required
 @user_passes_test(is_member)
 def member_view(request):
-
-
-from django.contrib.auth.decorators import permission_required
-from django.shortcuts import render
+    pass
 
 @permission_required('relationship_app.can_add_book')
 def add_book(request):
