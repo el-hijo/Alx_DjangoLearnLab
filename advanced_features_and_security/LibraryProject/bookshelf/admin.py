@@ -14,12 +14,19 @@ class BookAdmin(admin.ModelAdmin):
     
 admin.site.register(Book, BookAdmin)
 
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .models import CustomUser
+
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
-    # Optional: if you have extra fields, add them here
+    # Add your custom fields to admin forms
     fieldsets = UserAdmin.fieldsets + (
-        ('Extra Info', {'fields': ('profile_photo',)}),  # example
+        (None, {'fields': ('bio', 'profile_photo')}),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
-        ('Extra Info', {'fields': ('profile_photo',)}),
+        (None, {'fields': ('bio', 'profile_photo')}),
     )
+
+# Register the custom user model
+admin.site.register(CustomUser, CustomUserAdmin)
