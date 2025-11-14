@@ -27,6 +27,14 @@ def edit_book(request, pk):
         return redirect('list_books')
     return render(request, 'bookshelf/edit_book.html', {'form': form})
 
+
+def book_list(request):
+    """Lists all books stored in the database."""
+    books = Book.objects.all()
+    return render(request, "book_list.html", {"book_list": books})
+
+
+
 # View for deleting a book
 @permission_required('bookshelf.can_delete', raise_exception=True)
 def delete_book(request, pk):
