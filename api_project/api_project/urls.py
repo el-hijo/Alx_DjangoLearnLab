@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from api.views import BookListCreateAPIView
+from api.views import BookList
 
 
 urlpatterns = [
