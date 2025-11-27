@@ -1,25 +1,34 @@
 
+from django_filters import rest_framework
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
+from django_filters.rest_framework import DjangoFilterBackend
+
 from .models import Book
 from .serializers import BookSerializer
+
+
+
 # Create your views here.
 
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [AllowAny]
+    
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["title","author","publication_year"]
 
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [AllowAny]
     #lookup_field = "id"
 
 class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes =[permissions.IsAuthenticated]
+    permission_classes =[IsAuthenticated]
     
     def perform_create(self, serializer):
         serializer.save()
@@ -28,13 +37,13 @@ class BookCreateView(generics.CreateAPIView):
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         queryset = Book.objects.all()
         title = self.request.query_params.get("title")
         if title:
-            queryset = queryset.filter(title_icontains=title)
+            queryset = queryset.filter(title__icontains=title)
             
         return queryset
     
