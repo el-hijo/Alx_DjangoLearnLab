@@ -4,9 +4,10 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
-
+from rest_framework import filters   
 from .models import Book
 from .serializers import BookSerializer
+
 
 
 
@@ -21,7 +22,7 @@ class BookListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["title","author","publication_year"]
     search_fields = ["title", "author"]
-    
+    ordering_fields = ["title", "author", "publication_year"]
 
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
