@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
+from .models import Comment
 
 User = get_user_model()
 
@@ -13,3 +14,18 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "email", "first_name", "last_name", "password1", "password2")
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        
+        model = Comment
+        fields = ["content"] 
+
+
+    def clean_content(self):
+        content = self.cleaned_data.get("content")
+        if len(content.strip()) < 2:
+            raise forms.ValidationError("Comment is too short.")
+        return content
+    
