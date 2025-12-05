@@ -36,18 +36,18 @@ def profile(request):
 
 
 
-class ListView(ListView):
+class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'   
     context_object_name = 'posts'
     paginate_by = 10                         
 
-class DetailView(DetailView):
+class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
-class CreateView(LoginRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = CustomUserCreationForm                # or use `fields = ['title', 'content']`
     template_name = 'blog/post_form.html'
@@ -57,7 +57,7 @@ class CreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-class UpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = CustomUserCreationForm                  # or fields = [...]
     template_name = 'blog/post_form.html'
@@ -66,7 +66,7 @@ class UpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         post = self.get_object()
         return post.author == self.request.user
 
-class tDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
     success_url = reverse_lazy('blog:post-list')  # adjust namespace/name as you choose
