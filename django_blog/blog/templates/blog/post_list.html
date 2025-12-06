@@ -1,43 +1,52 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1>Blog</h1>
+<h1>Blog Posts</h1>
 
 <!-- Search Bar -->
 <form method="GET" action="{% url 'blog:post-list' %}">
     <input 
         type="text" 
         name="q" 
-        placeholder="Search posts..." 
+        placeholder="Search posts..."
         value="{{ request.GET.q }}"
     >
     <button type="submit">Search</button>
 </form>
 
+{% if tag_slug %}
+    <h3>Filtered by tag: <strong>{{ tag_slug }}</strong></h3>
+{% endif %}
+
 <hr>
 
-<!-- Post List -->
+<!-- Posts List -->
 {% if posts %}
     {% for post in posts %}
-        <article>
+        <article style="margin-bottom: 25px;">
             <h2>
-                <a href="{% url 'blog:post-detail' post.pk %}">{{ post.title }}</a>
+                <a href="{% url 'blog:post-detail' post.pk %}">
+                    {{ post.title }}
+                </a>
             </h2>
 
-            <p>by {{ post.author }} • {{ post.published_date|date:"F j, Y" }}</p>
+            <p>
+                by {{ post.author }} • {{ post.published_date|date:"F j, Y" }}
+            </p>
 
-            <p>{{ post.content|truncatewords:30 }}</p>
+            <p>{{ post.content|truncatewords:40 }}</p>
 
             <p>
                 <strong>Tags:</strong>
                 {% for tag in post.tags.all %}
-                    <span>{{ tag.name }}</span>
+                    <a href="{% url 'blog:posts-by-tag' tag.slug %}">
+                        {{ tag.name }}
+                    </a>
                 {% empty %}
                     <span>No tags</span>
                 {% endfor %}
             </p>
         </article>
-
         <hr>
     {% endfor %}
 {% else %}
@@ -48,15 +57,16 @@
 {% if is_paginated %}
   <div class="pagination">
     {% if page_obj.has_previous %}
-      <a href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a>
+      <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
     {% endif %}
 
     <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
 
     {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
+      <a href="?page={{ page_obj.next_page_number }}">Next</a>
     {% endif %}
   </div>
 {% endif %}
 
 {% endblock %}
+

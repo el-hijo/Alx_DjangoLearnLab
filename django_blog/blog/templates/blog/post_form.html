@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>{% if object %}Edit{% else %}Create{% endif %} post</h1>
-  <form method="post">
+
+<h1>{{ view.title|default:"Create Post" }}</h1>
+
+<form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Save</button>
-  </form>
+</form>
+
 {% endblock %}
+
