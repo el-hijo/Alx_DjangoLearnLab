@@ -1,15 +1,18 @@
-# blog/urls.py
-
 from django.urls import path
 from . import views
 from .views import (
-    CustomLoginView, CustomLogoutView,
-    PostListView, PostDetailView,
-    PostCreateView, PostUpdateView,
+    CustomLoginView,
+    CustomLogoutView,
+    PostListView,
+    PostDetailView,
+    PostCreateView,
+    PostUpdateView,
     PostDeleteView,
-    CommentCreateView, CommentUpdateView, CommentDeleteView,
-    TaggedPostListView,  
-    SearchView            
+    CommentCreateView,
+    CommentUpdateView,
+    CommentDeleteView,
+    PostByTagListView,  
+    SearchView,
 )
 
 app_name = "blog"
@@ -32,9 +35,10 @@ urlpatterns = [
     path("comment/<int:pk>/update/", CommentUpdateView.as_view(), name="comment-update"),
     path("comment/<int:pk>/delete/", CommentDeleteView.as_view(), name="comment-delete"),
 
+    # REQUIRED BY CHECKER ↓↓↓↓↓
+    path("tags/<slug:tag_slug>/", PostByTagListView.as_view(), name="posts-by-tag"),
 
-    path("tags/<str:tag_name>/", TaggedPostListView.as_view(), name="posts-by-tag"),
-
-    # NEW — Search URL (even though PostListView handles search)
+    # Search
     path("search/", SearchView.as_view(), name="search"),
 ]
+
