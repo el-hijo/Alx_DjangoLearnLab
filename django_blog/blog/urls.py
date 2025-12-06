@@ -13,6 +13,8 @@ from .views import (
     CommentDeleteView,
 )
 
+app_name = "blog"
+
 urlpatterns = [
     path("login/", CustomLoginView.as_view(), name="login"),
     path("logout/", CustomLogoutView.as_view(), name="logout"),

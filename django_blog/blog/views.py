@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post, Comment
-from .forms import CommentForm
+from .forms import CommentForm, PostForm
 
 
 class CustomLoginView(LoginView):
@@ -50,7 +50,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    form_class = CustomUserCreationForm                # or use `fields = ['title', 'content']`
+    form_class = PostForm              
     template_name = 'blog/post_form.html'
 
     def form_valid(self, form):
@@ -60,7 +60,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    form_class = CustomUserCreationForm                  # or fields = [...]
+    form_class = PostForm                  
     template_name = 'blog/post_form.html'
 
     def test_func(self):
