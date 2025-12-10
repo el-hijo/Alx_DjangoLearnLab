@@ -4,6 +4,7 @@ from rest_framework.exceptions import PermissionDenied
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 
+from rest_framework import filters
 # Create your views here.
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -18,6 +19,10 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
+
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title', 'content']  
+    ordering_fields = ['created_at', 'updated_at']
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
