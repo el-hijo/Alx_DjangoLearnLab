@@ -3,13 +3,13 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import User
-from .serializers import (RegisterSerializer, LoginSerializer, UserSerializer)
+from .models import User as CustomUser
 
-# Create your views here.
+from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
+
 
 class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()     
     serializer_class = RegisterSerializer
 
 
@@ -23,21 +23,28 @@ class LoginView(APIView):
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
 
-        return Response({"token": token.key,"user_id": user.id,"username": user.username})
+        return Response({
+            "token": token.key,
+            "user_id": user.id,
+            "username": user.username
+        })
+
 
 class FollowUserView(generics.GenericAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()     
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
 
     def post(self, request, pk):
         try:
-            target_user = User.objects.get(pk=pk)
-        except User.DoesNotExist:
-            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+            target_user = CustomUser.objects.get(pk=pk)
+        except CustomUser.DoesNotExist:
+            return Response({"detail": "User not found."},
+                            status=status.HTTP_404_NOT_FOUND)
 
         if target_user == request.user:
-            return Response({"detail": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "You cannot follow yourself."},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         request.user.following.add(target_user)
 
@@ -45,15 +52,16 @@ class FollowUserView(generics.GenericAPIView):
 
 
 class UnfollowUserView(generics.GenericAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()     
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
 
     def post(self, request, pk):
         try:
-            target_user = User.objects.get(pk=pk)
-        except User.DoesNotExist:
-            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+            target_user = CustomUser.objects.get(pk=pk)
+        except CustomUser.DoesNotExist:
+            return Response({"detail": "User not found."},
+                            status=status.HTTP_404_NOT_FOUND)
 
         if not request.user.following.filter(pk=pk).exists():
             return Response({"detail": "You are not following this user."},
