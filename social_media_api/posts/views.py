@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, generics, permissions, status
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -67,3 +67,5 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
             return Response({"detail": "You are not following this user."},status=status.HTTP_400_BAD_REQUEST)
         request.user.unfollow(target_user)
         return Response({"detail": f"You have unfollowed {target_user.username}."},status=status.HTTP_200_OK)
+
+
