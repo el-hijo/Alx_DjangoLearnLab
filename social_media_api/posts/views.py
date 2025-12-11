@@ -70,21 +70,12 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class UserFeedView(generics.GenericAPIView):
-    """
-    Returns a feed of posts from users the current user follows.
-    Ordered by newest first.
-    """
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = PostSerializer
 
     def get(self, request):
-        user = request.user
-
-        # Get users the current user follows
-        following_ids = user.following.values_list("id", flat=True)
-
-        # Fetch posts only from followed users
-        posts = Post.objects.filter(author__id__in=following_ids).order_by("-created_at")
+        following_users = request.user.following.all()
+        posts = Post.objects.filter(author__in=following_users).order_by("-created_at")
 
         serializer = self.serializer_class(posts, many=True)
         return Response(serializer.data)
