@@ -35,9 +35,9 @@ class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
 
-    def post(self, request, pk):
+    def post(self, request, user_id):
         try:
-            target_user = CustomUser.objects.get(pk=pk)
+            target_user = CustomUser.objects.get(pk=user_id)
         except CustomUser.DoesNotExist:
             return Response({"detail": "User not found."},
                             status=status.HTTP_404_NOT_FOUND)
@@ -56,9 +56,9 @@ class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
 
-    def post(self, request, pk):
+    def post(self, request, user_id):
         try:
-            target_user = CustomUser.objects.get(pk=pk)
+            target_user = CustomUser.objects.get(pk=user_id)
         except CustomUser.DoesNotExist:
             return Response({"detail": "User not found."},
                             status=status.HTTP_404_NOT_FOUND)
