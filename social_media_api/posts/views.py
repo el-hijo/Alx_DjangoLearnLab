@@ -3,7 +3,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import User
-from .models import Post, Comment
+from posts.models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer, UserSerializer
 
 from rest_framework import filters
