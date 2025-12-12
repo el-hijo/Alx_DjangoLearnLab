@@ -39,11 +39,14 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
     
         post_id = self.request.data.get("post")
-
+        post = Post.objects.get(pk=post_id)
+        serializer.save(author=self.request.user, post_id=post_id)
         if not post_id:
             raise PermissionDenied("Post ID is required to create a comment.")
 
         serializer.save(author=self.request.user,post_id=post_id)
+
+        Notification.objects.create(recipient=post.author,actor=self.request.user,verb="commented on your post",target=post,)
 
 
 
@@ -93,6 +96,8 @@ class LikePostView(generics.GenericAPIView):
             return Response({"detail": "You have already liked this post."},status=status.HTTP_400_BAD_REQUEST)
         Notification.objects.create(recipient=post.author,actor=request.user,verb="liked your post",target=post,)
         return Response({"detail": "Post liked successfully."}, status=status.HTTP_201_CREATED)
+
+        Notification.objects.create(recipient=post.author,actor=request.user,verb="liked your post",target=post,)
 
 
 

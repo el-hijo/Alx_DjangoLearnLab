@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from .models import User as CustomUser
 
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
-
+from notifications.models import Notification
 
 class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()     
@@ -49,6 +49,9 @@ class FollowUserView(generics.GenericAPIView):
         request.user.following.add(target_user)
 
         return Response({"detail": f"You are now following {target_user.username}."})
+
+
+        Notification.objects.create(recipient=target_user,actor=request.user,verb="started following you",target=target_user,)
 
 
 class UnfollowUserView(generics.GenericAPIView):

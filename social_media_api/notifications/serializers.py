@@ -1,0 +1,18 @@
+from rest_framework import serializers
+from .models import Notification
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    actor = serializers.StringRelatedField()
+    verb = serializers.CharField()
+    timestamp = serializers.DateTimeField()
+
+    class Meta:
+        model = Notification
+        fields = [
+            "id",
+            "actor",
+            "verb",
+            "timestamp",
+            "unread",
+        ]
