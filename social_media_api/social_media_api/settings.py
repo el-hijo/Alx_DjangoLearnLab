@@ -24,8 +24,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-secret")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
-#DEBUG = True
+#DEBUG = False
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS",".vercel.app .render.com .herokuapp.com localhost 127.0.0.1").split()
 
